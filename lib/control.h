@@ -1,5 +1,7 @@
+#ifndef CONTROL_H
+#define CONTROL_H
+
 #include <stdlib.h>
-#include <math.h>
 /*
 	Struct defining the vehicle's state
 */
@@ -10,8 +12,6 @@ typedef struct State{
 	float head;
 	float v;
 }State;
-State state_default = {0.0,0.0,0.0,0.0};
-State vehicle_state = state_default;
 
 
 /*
@@ -21,12 +21,8 @@ State vehicle_state = state_default;
 	@INPUTS: State struct, Accel [m/s^2], delta: steering angle [deg]
 
 */
+void update(State *state,float accel,float delta);
 
-void update(State *state,float accel,float delta)
-{
-
-
-}
 
 /*
 	Clips value based on max and min
@@ -34,8 +30,6 @@ void update(State *state,float accel,float delta)
 	@INPUTS: n: value, min: min value, max: max value
 
 */
-static float clip(float n, float min, float max)
-{
-	return fmax(min,fmin(n,max));	
+static float clip(float n, float min, float max);
 
-}
+#endif
