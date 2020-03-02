@@ -7,6 +7,15 @@
 	Struct defining the vehicle's state
 */
 
+
+// struct return for hypothenuse function
+typedef struct Data{
+	int loc;
+	float err_f_axle;
+	float* dx;
+	float* dy;
+}Data; 
+
 typedef struct State{
 	float x;
 	float y;
@@ -14,11 +23,23 @@ typedef struct State{
 	float v;
 }State;
 
+typedef struct Control{
+	float Kp;
+	float Ki;
+	float Kd;
+	float delta;
+	float p_lat_err;
+	float p_state;
+	float p_err;
+	float p_time;
+
+}Control;
+
 const float MAX_STEERING_ANGLE =  40*(M_PI/180);
 const float DT =  0.1;
 const float WHEEL_BASE = 1.9;
 const float PI = 3.141593;
-
+const float K = 0.5; // Stanley control gain
 /*
 	Updates the state of the vehicle, utilizing 
 	a bicycle model
@@ -28,9 +49,9 @@ const float PI = 3.141593;
 */
 void update(State *state,float accel,float delta);
 
-
+void stanley(State* state,float* cx,float* cy,int last_trgt);
 	
-
+float pid_control(float target,float current,float lat_err,float time);
 
 
 
