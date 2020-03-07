@@ -1,4 +1,5 @@
 import ctypes
+import const
 
 def wrap_function(lib,funcname,restype,argtypes):
 	''' Function to simplify wrapping functions '''
@@ -10,6 +11,8 @@ def wrap_function(lib,funcname,restype,argtypes):
 
 # State structure {}
 class State(ctypes.Structure):
+	'''Wraps the state struct as a python class '''
+
 	_fields_ = [('x',ctypes.c_float),
 		    ('y',ctypes.c_float),
 		    ('head',ctypes.c_float),
@@ -20,6 +23,37 @@ class State(ctypes.Structure):
 					self.y,self.head,
 					self.v)
 
+
+class Data(ctypes.Structure):
+	''' wrap for Data struct '''
+
+	_fields_ = [('loc',ctypes.c_float),
+		    ('err_f_axle',ctypes.c_float),
+		    ('dx',ctypes.POINTER(ctypes.c_float)),
+		    ('dy',ctypes.POINTER(ctypes.c_float)),]
+
+	def __repr__(self):
+		return '{0},{1},{2},{3}'.format(self.loc,
+					self.err_f_axle,
+					self.dx,self.dy)
+
+class Control(ctypes.Structure):
+	''' wrap for Control struct '''
+	
+	_fields_ = [('Kp',ctypes.c_float),
+		    ('Ki',ctypes.c_float),
+		    ('Kd',ctypes.c_float),
+		    ('delta',ctypes.c_float),
+		    ('p_lat_err',ctypes.c_float),
+		    ('p_state',ctypes.c_float),
+		    ('p_err',ctypes.c_float),
+		    ('p_time',ctypes.c_float)]
+
+	def __repr__(self):
+		return '{0},{1},{2},{3},{4},{5},{6},{7}'.format(
+			self.Kp,self.Ki,self.Kd,self.delta,
+			self.p_lat_err,self.p_state,self.p_err,
+			self.p_time)
 
 
 
@@ -33,8 +67,8 @@ print("passing a struct into C")
 
 print_state = wrap_function(libc,'print_state',None,[ctypes.POINTER(State)])
 a = State(1,2,3,4)
-print("state in python is",a)
-print_state(a)
+#print("state in python is",a)
+#print_state(a)
 
 #---------------------------------------------------------------------
 
@@ -49,5 +83,27 @@ print()
 print("position in C is")
 print_state(a)
 
+#---------------------------------------------------------------------
+
+# void stanley(State* state,float* cx,float* cy,int last_trgt);
+
+stanley = wrap_function(libc,'stanley',None,
+			[ctypes.POINTER(State),
+			 ctypes.POINTER(ctypes.c_float),
+			 ctypes.POINTER(ctypes.c_float),
+			 ctypes.c_int])
+
+
+#---------------------------------------------------------------------
+
+#float pid_control(float target,float current,float lat_err,float time);
+
+pid_control = wrap_function(libc,'pid_control',ctypes.c_float,
+			    [ctypes.c_float,
+			     ctypes.c_float,
+			     ctypes.c_float,
+			     ctypes.c_float])
+
+				
 
 
