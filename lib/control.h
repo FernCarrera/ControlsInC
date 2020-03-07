@@ -51,7 +51,7 @@ void update(State *state,float accel,float delta);
 
 void stanley(State* state,float* cx,float* cy,int last_trgt);
 	
-float pid_control(float target,float current,float lat_err,float time);
+float pid_control(Control* cntrl,float target,float current,float lat_err,float time);
 
 void print_state(State* state);
 

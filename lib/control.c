@@ -117,26 +117,27 @@ static void calc_target_index(State* state,float* cx,float* cy,int size)
 }
 
 
-float pid_control(float target,float current,float lat_err,float time)
+float pid_control(Control* cntrl,float target,float current,float lat_err,float time)
 {
 
 	// pump the breaks
-	if (fabs(lat_err)>cntrl.p_lat_err){
+	if (fabs(lat_err)>cntrl->p_lat_err){
 		target *= 0.5;	
 	}
 
-	cntrl.p_lat_err = fabs(lat_err);
-
-	float time_elap = clock()/CLOCKS_PER_SEC - cntrl.p_time;
-	float err = target - current;
-	float err_rate = (err-cntrl.p_err);
+	cntrl->p_lat_err = fabs(lat_err);
 	
-	cntrl.p_err = err;
-	cntrl.p_time = time;
+	float time_elap = time - cntrl->p_time;
+	float err = target - current;
+	float err_rate = (err-cntrl->p_err);
+	
+	cntrl->p_err = err;
+	cntrl->p_time = time;
 
-	float d_gain = cntrl.Kd * err_rate/time_elap;
-	float i_gain = cntrl.Ki * (cntrl.p_state - (err*time_elap));
-	float p_gain = cntrl.Kp * (target - current);
+	float d_gain = cntrl->Kd * err_rate/time_elap;
+	float i_gain = cntrl->Ki * (cntrl->p_state - (err*time_elap));
+	float p_gain = cntrl->Kp * (target - current);
+
 
 	return d_gain + i_gain + p_gain;	 
 
@@ -221,6 +222,11 @@ int main()
 	printf("og state:\n%f\n%f\n%f\n%f\n",test.x,test.y,test.head,test.v);
 	update(&test,10.0,4.0);
 	printf("new state:\n%f\n%f\n%f\n%f\n",test.x,test.y,test.head,test.v);
+
+	Control cntrl = {1,1,1,0.1,0.0,0.0,0.01};
+
+	float corr = pid_control(&cntrl,5.0,0.0,5,10);	
+	printf("correction: %.2f\n",corr);
 	
 	return 0;
 

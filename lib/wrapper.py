@@ -96,14 +96,18 @@ stanley = wrap_function(libc,'stanley',None,
 
 #---------------------------------------------------------------------
 
-#float pid_control(float target,float current,float lat_err,float time);
+#float pid_control(Control*, float,float,float lat_err,float time);
 
 pid_control = wrap_function(libc,'pid_control',ctypes.c_float,
-			    [ctypes.c_float,
+			    [ctypes.POINTER(Control),
+			     ctypes.c_float,
 			     ctypes.c_float,
 			     ctypes.c_float,
 			     ctypes.c_float])
-
-				
+pid = Control(1,1,1,0,0,0,0,0)
+correction = pid_control(pid,5,0,3,2)				
+pid_control(pid,5,2,4,5)
+print('correction',correction)
+print('control state',pid)
 
 
