@@ -1,2 +1,5 @@
-controlmake: control.c control.h
-	gcc control.h control.c
+output: control.c
+	gcc -shared -o libcontrol.so -fPIC control.c
+
+clean:
+	rm *.so *.o

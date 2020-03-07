@@ -196,7 +196,17 @@ void stanley(State* state,float* cx,float* cy,int last_trgt)
 
 }
 
+/*
+	need to expand to print all the structs
+*/
+void print_state(State* state)
+{
 
+	printf("PRINTING VEHICLE STATE");
+	printf("\nX:%.2f\ny:%.2f\nhead:%.2f\nv:%.2f\n",
+		state->x,state->y,state->head,state->v);
+	printf("END STATE\n");
+}
 
 
 int main()
@@ -207,12 +217,13 @@ int main()
 	assert(normalize_angle(3.0*PI) == value);
 
 
-	State test = {1.0,1.0,1.0,1.0};
+	State test = {1.0,2.0,3.0,4.0};
 	printf("og state:\n%f\n%f\n%f\n%f\n",test.x,test.y,test.head,test.v);
-	update(&test,29.81,10*(PI/180));
+	update(&test,10.0,4.0);
 	printf("new state:\n%f\n%f\n%f\n%f\n",test.x,test.y,test.head,test.v);
 	
 	return 0;
 
 
 }
+

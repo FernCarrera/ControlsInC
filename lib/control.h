@@ -53,6 +53,7 @@ void stanley(State* state,float* cx,float* cy,int last_trgt);
 	
 float pid_control(float target,float current,float lat_err,float time);
 
+void print_state(State* state);
 
 
 
