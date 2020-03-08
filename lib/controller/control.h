@@ -55,7 +55,6 @@ float pid_control(Control* cntrl,float target,float current,float lat_err,float 
 
 void print_state(State* state);
 
-
-
+void calc_target_index(State* state,float* cx,float* cy,int size);
 
 #endif

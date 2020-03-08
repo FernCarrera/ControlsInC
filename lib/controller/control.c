@@ -90,7 +90,7 @@ static void short_hypo(Data* data,float fx,float fy,float* cx,float* cy,int size
 /*
 	Calculate the next point in the path to follow
 */
-static void calc_target_index(State* state,float* cx,float* cy,int size)
+void calc_target_index(State* state,float* cx,float* cy,int size)
 {
 	// calculate front axle position
 	float fx = (state->x) + WHEEL_BASE * cos(state->head);

@@ -110,4 +110,8 @@ pid_control(pid,5,2,4,5)
 print('correction',correction)
 print('control state',pid)
 
+#-----------------------------------------------------------------------
+#void calc_target_index(State* state,float* cx,float* cy,int size)
 
+
+#calc_target_index = wrap_function(libc,'calc_target_index',)
