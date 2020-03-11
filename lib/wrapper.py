@@ -14,6 +14,25 @@ def wrap_function(lib,funcname,restype,argtypes):
 	return func
 
 
+def to_array(lists,list_type="int"):
+	"""Converts lists into array for wrapped C
+	   code
+	
+	Arguments:
+		lists {[list]} -- [list of lists to be converted]
+		type  {[type]} -- [specifies if list type is int or float]
+	"""
+	if list_type == "int":
+		
+		ret = [(ctypes.c_int*len(item))(*item) for item in lists ]
+
+	if list_type == "float":
+		
+		ret = [(ctypes.c_float*len(item))(*item) for item in lists ]
+
+	return ret
+
+
 # State structure {}
 class State(ctypes.Structure):
 	'''Wraps the state struct as a python class '''
@@ -67,6 +86,14 @@ short_hypo = wrap_function(libc,'short_hypo',None,
 						ctypes.POINTER(ctypes.c_float),
 						ctypes.POINTER(ctypes.c_float),
 						ctypes.c_int])
+
+
+calc_target_index = wrap_function(libc,"calc_target_index",None,
+						[ctypes.POINTER(State),
+						 ctypes.POINTER(Data),
+						 ctypes.POINTER(ctypes.c_float),
+						 ctypes.POINTER(ctypes.c_float),
+						 ctypes.c_int])
 
 
 if __name__ == '__main__':
@@ -138,6 +165,11 @@ if __name__ == '__main__':
 
 
 	#-----------------------------------------------------------------------
-	#void calc_target_index(State* state,float* cx,float* cy,int size)
-
+	#void calc_target_index(State* state,Data* datafloat* cx,float* cy,int size)
+	calc_target_index = wrap_function(libc,"calc_target_index",None,
+						[ctypes.POINTER(State),
+						 ctypes.POINTER(Data),
+						 ctypes.POINTER(ctypes.c_float),
+						 ctypes.POINTER(ctypes.c_float),
+						 ctypes.c_int])
 

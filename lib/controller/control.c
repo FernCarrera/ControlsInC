@@ -111,7 +111,7 @@ void calc_target_index(State* state,Data* data,float* cx,float* cy,int size)
 	float vector[2] = {data->dx[data->loc],data->dy[data->loc]};
 	float err_frnt_axl = dot_prod(vector,front_axle_vec,2);
 
-	data->err_f_axle = err_frnt_axl;
+	data->err_f_axle = roundf(err_frnt_axl*100)/100;
 
 
 }
