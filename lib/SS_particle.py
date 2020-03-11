@@ -81,7 +81,7 @@ def main():
         zs = (np.linalg.norm(lmark_pos - [position[0],position[1]],axis=1) + (np.random.randn(NL) * 0.1))
         #print("Zs:{}".format(zs[:5]))
         # set up controls
-        ai = pd.pid_control(target_speed,state.v,lat_error[-1],time)
+        ai = pid_control(target_speed,state.v,lat_error[-1],time)
         di,target_index = stanley(state,x_path,y_path,target_index)
         state.update(ai,di)
 

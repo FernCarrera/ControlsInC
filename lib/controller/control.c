@@ -57,11 +57,11 @@ static float normalize_angle(float angle)
 
 	returns index location of closest point in path
 */
-static void short_hypo(Data* data,float fx,float fy,float* cx,float* cy,int size)
+void short_hypo(Data* data,float fx,float fy,float* cx,float* cy,int size)
 {
 	float dx[size];float dy[size];
 
-	for (int i=0;i<size;++i){
+	for (int i=0;i<size;i++){
 		dx[i] = fx - cx[i];
 		dy[i] = fy - cy[i];		
 	
@@ -69,7 +69,7 @@ static void short_hypo(Data* data,float fx,float fy,float* cx,float* cy,int size
 	float hypo = 0.0;
 	float min = 100000.0;
 	int loc = 0;
-	for (int i=0;i<size;++i){
+	for (int i=0;i<size;i++){
 		
 		hypo = hypot(dx[i],dy[i]);
 		
@@ -90,14 +90,14 @@ static void short_hypo(Data* data,float fx,float fy,float* cx,float* cy,int size
 /*
 	Calculate the next point in the path to follow
 */
-void calc_target_index(State* state,float* cx,float* cy,int size)
+void calc_target_index(State* state,Data* data,float* cx,float* cy,int size)
 {
 	// calculate front axle position
 	float fx = (state->x) + WHEEL_BASE * cos(state->head);
 	float fy = (state->y) + WHEEL_BASE * sin(state->head);
 	
 	// Find shortest point to travel to
-	short_hypo(&data,fx,fy,cx,cy,size);
+	short_hypo(data,fx,fy,cx,cy,size);
 
 	/*
 	calculate error between front axle vector & target point 
@@ -108,10 +108,10 @@ void calc_target_index(State* state,float* cx,float* cy,int size)
 	*/
 	float front_axle_vec[2] = {-cos(state->head+PI/2),
 				-sin(state->head+PI/2)};
-	float vector[2] = {data.dx[data.loc],data.dy[data.loc]};
+	float vector[2] = {data->dx[data->loc],data->dy[data->loc]};
 	float err_frnt_axl = dot_prod(vector,front_axle_vec,2);
 
-	data.err_f_axle = err_frnt_axl;
+	data->err_f_axle = err_frnt_axl;
 
 
 }
